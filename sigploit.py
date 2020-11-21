@@ -13,13 +13,13 @@ import sys
 import os
 import signal
 import time
-from .ss7.tracking import *
-from .ss7.interception import *
-from .ss7.fraud import *
-from .ss7.dos import *
-from .ss7main import *
-from .gtpmain import *
-from .gtp import *
+from ss7.tracking import *
+from ss7.interception import *
+from ss7.fraud import *
+from ss7.dos import *
+from ss7main import *
+from gtpmain import *
+from gtp import *
 from colorama import init
 from termcolor import cprint
 from pyfiglet import figlet_format
