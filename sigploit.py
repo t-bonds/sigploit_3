@@ -133,7 +133,7 @@ X      | X     |  X    |   X   |    X  |     X |      X|\|
 
     for row in range(ROWS):
         for c in word:
-            print(table[c][row], end=' ')
+            print(table[c][row], end == ' ')
         print()
     print()
 

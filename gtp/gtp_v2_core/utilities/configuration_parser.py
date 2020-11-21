@@ -1,11 +1,11 @@
 #       configuration_parser.py
-#       
+#
 #       Copyright 2018 Rosalia d'Alessandro
 #
 #       Redistribution and use in source and binary forms, with or without
 #       modification, are permitted provided that the following conditions are
 #       met:
-#       
+#
 #       * Redistributions of source code must retain the above copyright
 #         notice, this list of conditions and the following disclaimer.
 #       * Redistributions in binary form must reproduce the above
@@ -15,7 +15,7 @@
 #       * Neither the name of the  nor the names of its
 #         contributors may be used to endorse or promote products derived from
 #         this software without specific prior written permission.
-#       
+#
 #       THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 #       "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 #       LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -62,7 +62,7 @@ class parseConfigs(object):
         '''
         Constructor
         '''
-       
+
         self.__msgs = []
         if config_file is None or config_file is "":
             raise Exception("No config file provided")
@@ -75,18 +75,18 @@ class parseConfigs(object):
         self.__version = 0x02
         self.__verbose = verbose
         self.__parseConfigs()
-        
+
     def __parseConfigs(self):
         confobj = ConfigObj(self.__cfg)
 
         if 'GENERIC' not in confobj.sections:
-            
+
             raise ConfigObjError('Section GENERIC is required')
-            
-                
+
+
         if 'port' in confobj['GENERIC']:
-            self.__gtp_port = int(confobj['GENERIC']['port']) 
-        
+            self.__gtp_port = int(confobj['GENERIC']['port'])
+
         if 'version' in confobj['GENERIC']:
             self.__version= int(confobj['GENERIC']['version'])
 
@@ -94,37 +94,37 @@ class parseConfigs(object):
             self.__num_msg = int(confobj['GENERIC']['num_msg'])
         else :
             self.__num_msg = 1
-          
+
         self.__msgs = self.__create_messages(confobj)
-              
-    
+
+
     def __format_base_messages(self, confobj):
         if 'base_message_list' not in confobj['GENERIC']:
             logWarn("Base message list empty",
-                    verbose = self.__verbose, 
+                    verbose = self.__verbose,
                     TAG = "parseConfig")
-            return []       
-        self.__configs['base_message_list'] = confobj['GENERIC']['base_message_list']        
+            return []
+        self.__configs['base_message_list'] = confobj['GENERIC']['base_message_list']
         msgs = []
         for msg_type in self.__configs['base_message_list']:
             if int(msg_type) == GTPmessageTypeDigit["echo-request"] :
                 i = 0
-                while i < self.__num_msg :             
+                while i < self.__num_msg :
                     msgs.append(EchoRequest())
                     i += 1
             elif int(msg_type) == GTPmessageTypeDigit["echo-response"]  :
                 i = 0
-                while i < self.__num_msg :                 
+                while i < self.__num_msg :
                     msgs.append(EchoResponse(1))
-                    i += 1                    
-            else: 
+                    i += 1
+            else:
                 raise Exception("%s:%s - Invalid base msg type "
-                                "%d"%(self.__class__.__name__, 
+                                "%d"%(self.__class__.__name__,
                                       "__format_base_messages",
                                       int(msg_type)))
         return msgs
-    
-    
+
+
     def __format_interface_msg(self, confobj):
         msgs = []
         if confobj is None:
@@ -133,52 +133,52 @@ class parseConfigs(object):
 
         if '3gpp_messages_list' not in confobj['GENERIC']:
             logWarn("3gpp message list empty",
-                    verbose = self.__verbose, 
-                    TAG = "parseConfig")            
-            return  [] 
+                    verbose = self.__verbose,
+                    TAG = "parseConfig")
+            return  []
         self.__configs['3gpp_messages_list'] = confobj['GENERIC']['3gpp_messages_list']
-                 
+
         if 'IES' not in confobj.sections:
             raise ConfigObjError('Section IES is required')
-        
+
         if 'interface' not in confobj['GENERIC']:
             raise ConfigObjError('Value "GENERIC.interface" is required')
         self.__configs['interface'] = confobj['GENERIC']['interface']
         recovery = True
         if 'recovery' in  confobj['IES']:
-            recovery = int(confobj['IES']['recovery']) 
+            recovery = int(confobj['IES']['recovery'])
         for msg_type in self.__configs['3gpp_messages_list']:
             if int(msg_type) == GTPmessageTypeDigit["create-session-request"] :
                 i = 0
                 while i < self.__num_msg :
                     msgs.append(CreateSessionRequest(
-                        source_ip = confobj['GENERIC']['source_ip'], 
-                        interface = int(self.__configs['interface']), 
-                        imsi = confobj['IES']['imsi'], 
-                        mcc = confobj['IES']['mcc'], 
+                        source_ip = confobj['GENERIC']['source_ip'],
+                        interface = int(self.__configs['interface']),
+                        imsi = confobj['IES']['imsi'],
+                        mcc = confobj['IES']['mcc'],
                         mnc = confobj['IES']['mnc'],
-                        lac = int(confobj['IES']['lac']), 
+                        lac = int(confobj['IES']['lac']),
                         rac = int(confobj['IES']['rac']),
-                        apn = confobj['IES']['apn'], 
+                        apn = confobj['IES']['apn'],
                         p_dns = confobj['IES']['primary_dns'],
-                        s_dns = confobj['IES']['secondary_dns'], 
+                        s_dns = confobj['IES']['secondary_dns'],
                         gsn = confobj['IES']['gsn'],
-                        phone= confobj['IES']['msisdn'], 
-                        imei = confobj['IES']['imei'], 
+                        phone= confobj['IES']['msisdn'],
+                        imei = confobj['IES']['imei'],
                         rat_type = confobj['IES']['rat_type'],
                         ebi = int(confobj['IES']['ebi']),
                         recovery = recovery
                         )
                     )
                     i += 1
-                
+
             elif int(msg_type)  == GTPmessageTypeDigit["create-session-response"] :
                 i = 0
                 while i < self.__num_msg :
                     msgs.append(CreateSessionResponse(
-                        int(confobj['GENERIC']['teid'], 16), 
-                        int(confobj['GENERIC']['sqn'], 16), 
-                        confobj['GENERIC']['source_ip'], 
+                        int(confobj['GENERIC']['teid'], 16),
+                        int(confobj['GENERIC']['sqn'], 16),
+                        confobj['GENERIC']['source_ip'],
                         int(self.__configs['interface']),
                         p_dns = confobj['IES']['primary_dns'],
                         s_dns = confobj['IES']['secondary_dns'],
@@ -190,13 +190,13 @@ class parseConfigs(object):
                 mnc = confobj['IES']['mnc']
                 lac = int(confobj['IES']['lac'])
                 rac = int(confobj['IES']['rac'])
-                ebi = int(confobj['IES']['ebi'])  
+                ebi = int(confobj['IES']['ebi'])
                 interface = int(self.__configs['interface'])
-                          
+
                 for t in confobj['GENERIC']['teid']:
                     msgs.append(DeleteSessionRequest(int(t, 16),
-                        source_ip = confobj['GENERIC']['source_ip'], 
-                        mcc = mcc, 
+                        source_ip = confobj['GENERIC']['source_ip'],
+                        mcc = mcc,
                         mnc = mnc,
                         lac = lac,
                         rac = rac,
@@ -204,127 +204,127 @@ class parseConfigs(object):
                         interface = interface
                         )
                     )
-                                        
-            elif int(msg_type)  == GTPmessageTypeDigit["delete-session-response"] :                
-                for t,s in zip(confobj['GENERIC']['teid'], 
+
+            elif int(msg_type)  == GTPmessageTypeDigit["delete-session-response"] :
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
-                    msgs.append(DeleteSessionResponse(teid = int(t, 16), 
+                    msgs.append(DeleteSessionResponse(teid = int(t, 16),
                        sqn = int(s, 16)
                        )
-                    )       
-                    
+                    )
+
             elif int(msg_type)  == GTPmessageTypeDigit["create-bearer-request"] :
                 source_ip = confobj['GENERIC']['source_ip']
                 interface = int(self.__configs['interface'])
                 ebi = int(confobj['IES']['ebi'])
-                for t,s in zip(confobj['GENERIC']['teid'], 
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
                     msgs.append(CreateBearerRequest(teid = int(t, 16),
-                        source_ip = source_ip, 
+                        source_ip = source_ip,
                         interface = interface,
                         ebi = ebi,
                         sqn = int(s, 16)
                         )
-                    )  
-                    
+                    )
+
             elif int(msg_type)  == GTPmessageTypeDigit["modify-bearer-request"] :
-                source_ip = confobj['GENERIC']['source_ip'] 
+                source_ip = confobj['GENERIC']['source_ip']
                 interface = int(self.__configs['interface'])
-                ebi = int(confobj['IES']['ebi']) 
+                ebi = int(confobj['IES']['ebi'])
                 nit = int(confobj['IES']['node_id_type'])
-                mcc = int(confobj['IES']['mcc'])  
-                mnc = int(confobj['IES']['mnc'])                  
-                if 'fteid' in confobj['IES']: 
+                mcc = int(confobj['IES']['mcc'])
+                mnc = int(confobj['IES']['mnc'])
+                if 'fteid' in confobj['IES']:
                     fteid = int(confobj['IES']['fteid'])
-                else: 
-                    fteid = 0              
-                for t,s in zip(confobj['GENERIC']['teid'], 
+                else:
+                    fteid = 0
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
                     msgs.append(ModifyBearerRequest(teid = int(t, 16),
-                        source_ip = source_ip, 
+                        source_ip = source_ip,
                         interface = interface,
                         ebi = ebi,
                         sqn = int(s, 16),
                         nit = nit,
                         fteid = fteid,
-                        mcc = mcc, 
+                        mcc = mcc,
                         mnc = mnc
                         )
-                    ) 
-                    
+                    )
+
             elif int(msg_type)  == GTPmessageTypeDigit["modify-bearer-response"] :
                 source_ip = confobj['GENERIC']['source_ip']
                 interface = int(self.__configs['interface'])
-                ebi = int(confobj['IES']['ebi'])     
+                ebi = int(confobj['IES']['ebi'])
 
-              
-                for t,s in zip(confobj['GENERIC']['teid'], 
+
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
                     msgs.append(ModifyBearerResponse(teid = int(t, 16),
-                        source_ip = source_ip, 
+                        source_ip = source_ip,
                         interface = interface,
                         ebi = ebi,
-                        sqn = int(s, 16)                            
+                        sqn = int(s, 16)
                         )
                     )
             elif int(msg_type)  == GTPmessageTypeDigit["create-bearer-response"] :
                 source_ip = confobj['GENERIC']['source_ip']
                 interface = int(self.__configs['interface'])
-                ebi = int(confobj['IES']['ebi'])                 
-                for t,s in zip(confobj['GENERIC']['teid'], 
+                ebi = int(confobj['IES']['ebi'])
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
                     msgs.append(CreateBearerResponse(teid = int(t, 16),
-                        source_ip = source_ip, 
+                        source_ip = source_ip,
                         interface = interface,
                         ebi = ebi,
                         sqn = int(s, 16)
                         )
-                    )  
+                    )
             elif int(msg_type)  == GTPmessageTypeDigit["delete-bearer-request"] :
                 source_ip = confobj['GENERIC']['source_ip']
                 interface = int(self.__configs['interface'])
-                ebi = int(confobj['IES']['ebi'])  
-                nit = int(confobj['IES']['node_id_type'])   
-                cause = int(confobj['IES']['cause'])   
-                mcc = int(confobj['IES']['mcc'])  
-                mnc = int(confobj['IES']['mnc'])                            
-                for t,s in zip(confobj['GENERIC']['teid'], 
+                ebi = int(confobj['IES']['ebi'])
+                nit = int(confobj['IES']['node_id_type'])
+                cause = int(confobj['IES']['cause'])
+                mcc = int(confobj['IES']['mcc'])
+                mnc = int(confobj['IES']['mnc'])
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
                     msgs.append(DeleteBearerRequest(teid = int(t, 16),
-                        source_ip = source_ip, 
+                        source_ip = source_ip,
                         interface = interface,
                         ebi = ebi,
                         sqn = int(s, 16),
                         nit = nit,
                         cause = cause,
-                        mcc = mcc, 
+                        mcc = mcc,
                         mnc = mnc
                         )
-                    )                     
+                    )
             elif int(msg_type)  == GTPmessageTypeDigit["delete-bearer-response"] :
                 source_ip = confobj['GENERIC']['source_ip']
                 interface = int(self.__configs['interface'])
-                ebi = int(confobj['IES']['ebi'])  
-                for t,s in zip(confobj['GENERIC']['teid'], 
+                ebi = int(confobj['IES']['ebi'])
+                for t,s in zip(confobj['GENERIC']['teid'],
                                confobj['GENERIC']['sqn']):
                     msgs.append(DeleteBearerResponse(teid = int(t, 16),
-                        source_ip = source_ip, 
+                        source_ip = source_ip,
                         interface = interface,
                         ebi = ebi,
                         sqn = int(s, 16)
                         )
-                    )  
+                    )
             elif int(msg_type)  == GTPmessageTypeDigit["delete-pdn-connection-set-request"] :
                 source_ip = confobj['GENERIC']['source_ip']
-                nit = int(confobj['IES']['node_id_type'])     
-                mcc = int(confobj['IES']['mcc'])  
-                mnc = int(confobj['IES']['mnc'])   
-                            
+                nit = int(confobj['IES']['node_id_type'])
+                mcc = int(confobj['IES']['mcc'])
+                mnc = int(confobj['IES']['mnc'])
+
                 for s in confobj['GENERIC']['sqn']:
                     msgs.append(DeletePDNConnectionSetRequest(
-                        source_ip = source_ip,sqn = int(s, 16), 
+                        source_ip = source_ip,sqn = int(s, 16),
                         nit = nit, mcc = mcc, mnc = mnc)
-                        )                                                                                                                               
+                        )
         return msgs
 
     def __create_messages(self, confobj):
@@ -332,12 +332,12 @@ class parseConfigs(object):
         msgs.extend(self.__format_base_messages(confobj))
         msgs.extend(self.__format_interface_msg(confobj))
         return msgs
-    
-    def get_unpacked_messages(self):   
+
+    def get_unpacked_messages(self):
         return self.__msgs
-    
+
     def get_gtp_port(self):
         return self.__gtp_port
-    
+
     def get_version(self):
-        return self.__version   
+        return self.__version
