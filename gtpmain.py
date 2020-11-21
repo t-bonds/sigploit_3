@@ -21,7 +21,7 @@ remote_net =''
 listening = True
 verbosity = 2
 output_file ='results.csv'
-#TEST CHANGE
+
 def gtpinfo():
     os.system('clear')
     print(" \033[31mInformation Gathering\033[0m ".center(105, "#"))
