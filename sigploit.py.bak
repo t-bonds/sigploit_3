@@ -13,13 +13,13 @@ import sys
 import os
 import signal
 import time
-from .ss7.tracking import *
-from .ss7.interception import *
-from .ss7.fraud import *
-from .ss7.dos import *
-from .ss7main import *
-from .gtpmain import *
-from .gtp import *
+from ss7.tracking import *
+from ss7.interception import *
+from ss7.fraud import *
+from ss7.dos import *
+from ss7main import *
+from gtpmain import *
+from gtp import *
 from colorama import init
 from termcolor import cprint
 from pyfiglet import figlet_format
@@ -129,13 +129,13 @@ X      | X     |  X    |   X   |    X  |     X |      X|\|
         if '|' in form:
             table[form[-2]] = form[:-3].split('|')
 
-    ROWS = len(list(table.values())[0])
+    ROWS = len(table.values()[0])
 
     for row in range(ROWS):
         for c in word:
-            print(table[c][row], end=' ')
-        print()
-    print()
+            print table[c][row],
+        print
+    print
 
 
 
@@ -156,17 +156,17 @@ def mainMenu():
     print()
     print()
     print()
-    print(("   Module".rjust(10) + "\t\t\tDescription"))
+    print("   Module".rjust(10) + "\t\t\tDescription")
     print("   --------                --------------------")
-    print(("0) SS7".rjust(8) + "\t\t2G/3G Voice and SMS attacks"))
-    print(("1) GTP".rjust(8) + "\t\t3G/4G Data attacks"))
-    print(("2) Diameter".rjust(13) + "\t\t4G Data attacks"))
-    print(("3) SIP".rjust(8) + "\t\t4G IMS attacks"))
+    print("0) SS7".rjust(8) + "\t\t2G/3G Voice and SMS attacks")
+    print("1) GTP".rjust(8) + "\t\t3G/4G Data attacks")
+    print("2) Diameter".rjust(13) + "\t\t4G Data attacks")
+    print("3) SIP".rjust(8) + "\t\t4G IMS attacks")
 
     print()
-    print(("or quit to exit SigPloit\n".rjust(28)))
+    print("or quit to exit SigPloit\n".rjust(28))
 
-    choice = input("\033[34msig\033[0m\033[37m>\033[0m ")
+    choice = raw_input("\033[34msig\033[0m\033[37m>\033[0m ")
 
     if choice == "0":
         os.system('clear')
