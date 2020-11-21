@@ -143,28 +143,28 @@ def mainMenu():
     os.system('clear')
 
     banner('SigPloit')
-    print "\033[33m[-][-]\033[0m\t\tSignaling Exploitation Framework\t\033[33m [-][-]\033[0m"
-    print "\033[33m[-][-]\033[0m\t\t\tVersion:\033[31mBETA 1.1\033[0m\t\t\033[33m [-][-]\033[0m"
-    print "\033[33m[-][-]\033[0m\t\tAuthor:\033[32mLoay AbdelRazek(@sigploit)\033[0m\t\033[33m [-][-]\033[0m\n"
-    print
-    print "Contributors:"
+    print("\033[33m[-][-]\033[0m\t\tSignaling Exploitation Framework\t\033[33m [-][-]\033[0m")
+    print("\033[33m[-][-]\033[0m\t\t\tVersion:\033[31mBETA 1.1\033[0m\t\t\033[33m [-][-]\033[0m")
+    print("\033[33m[-][-]\033[0m\t\tAuthor:\033[32mLoay AbdelRazek(@sigploit)\033[0m\t\033[33m [-][-]\033[0m\n")
+    print()
+    print("Contributors:")
 
-    print "\t\033[31mRosalia D'Alessandro\033[0m"
-    print "\t\033[31mIlario Dal Grande\033[0m"
-    print
-    print
-    print
-    print
-    print
-    print "   Module".rjust(10) + "\t\t\tDescription"
-    print "   --------                --------------------"
-    print "0) SS7".rjust(8) + "\t\t2G/3G Voice and SMS attacks"
-    print "1) GTP".rjust(8) + "\t\t3G/4G Data attacks"
-    print "2) Diameter".rjust(13) + "\t\t4G Data attacks"
-    print "3) SIP".rjust(8) + "\t\t4G IMS attacks"
+    print("\t\033[31mRosalia D'Alessandro\033[0m")
+    print("\t\033[31mIlario Dal Grande\033[0m")
+    print()
+    print()
+    print()
+    print()
+    print()
+    print("   Module".rjust(10) + "\t\t\tDescription")
+    print("   --------                --------------------")
+    print("0) SS7".rjust(8) + "\t\t2G/3G Voice and SMS attacks")
+    print("1) GTP".rjust(8) + "\t\t3G/4G Data attacks")
+    print("2) Diameter".rjust(13) + "\t\t4G Data attacks")
+    print("3) SIP".rjust(8) + "\t\t4G IMS attacks")
 
-    print
-    print "or quit to exit SigPloit\n".rjust(28)
+    print()
+    print("or quit to exit SigPloit\n".rjust(28))
 
     choice = raw_input("\033[34msig\033[0m\033[37m>\033[0m ")
 
@@ -176,28 +176,28 @@ def mainMenu():
         os.system('clear')
         prep()
     elif choice == "2":
-        print "\n\033[34m[*]\033[0mDiameter will be updated in version 3 release.."
-        print "\033[34m[*]\033[0mGoing back to Main Menu"
+        print("\n\033[34m[*]\033[0mDiameter will be updated in version 3 release..")
+        print("\033[34m[*]\033[0mGoing back to Main Menu")
         time.sleep(2)
         mainMenu()
     elif choice == "3":
-        print "\n\033[34m[*]\033[0mSIP will be updated in version 4 release.."
-        print "\033[34m[*]\033[0mGoing back to Main Menu"
+        print("\n\033[34m[*]\033[0mSIP will be updated in version 4 release..")
+        print("\033[34m[*]\033[0mGoing back to Main Menu")
         time.sleep(2)
         mainMenu()
     elif choice == "quit" or choice == "exit":
-        print '\nYou are now exiting SigPloit...'
+        print('\nYou are now exiting SigPloit...')
         time.sleep(1)
         sys.exit(0)
     else:
-        print '\n\033[31m[-]Error:\033[0m Please Enter a Valid Choice (0 - 3)'
+        print('\n\033[31m[-]Error:\033[0m Please Enter a Valid Choice (0 - 3)')
         time.sleep(2)
         mainMenu()
 
 
 def signal_handler(signal, frame):
-    print
-    print '\nYou are now exiting SigPloit...'
+    print()
+    print('\nYou are now exiting SigPloit...')
     time.sleep(1)
     sys.exit(0)
 
