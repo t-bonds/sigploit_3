@@ -71,12 +71,12 @@ def main(config_file, target, listening=True, verbose = 2,output_file=""):
         sleep_time = DEFAULT_SLEEPTIME
       
         if listening_mode and  remote_net == None:
-            print "\033[33m[!]\033[0m remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required"
+            print("\033[33m[!]\033[0m remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required")
             return
         
         # MAIN BODY #
         if sys.argv[0] == "" :
-            print "\033[31m[-]Error:\033[0m missed config file"
+            print("\033[31m[-]Error:\033[0m missed config file")
             return         
 # 
 #         if opts.num_msg is None or opts.num_msg == "" or int(opts.num_msg) == 0 :
@@ -97,7 +97,7 @@ def main(config_file, target, listening=True, verbose = 2,output_file=""):
             lstn.join()
             lstn.stop()
             
-        print "\033[34m[*]\033[0m Sent %d GTPV2 messages"%(len(msgs))
+        print(("\033[34m[*]\033[0m Sent %d GTPV2 messages"%(len(msgs))))
         
         fd = None
         if not listening_mode :
@@ -106,21 +106,21 @@ def main(config_file, target, listening=True, verbose = 2,output_file=""):
         if output_file != "" :
             fd = open(output_file, 'w')
         printed = False              
-        for key, value in message_queue.items():
-            for k,v in value.items():              
+        for key, value in list(message_queue.items()):
+            for k,v in list(value.items()):              
                 for i in v :
                     if i['reply'] == 1:
                         if not printed :
-                            print "\033[32m[+]\033[0m %s implements a GTP v2 stack"%key
+                            print(("\033[32m[+]\033[0m %s implements a GTP v2 stack"%key))
                             printed = True
-                        print "\033[32m[+]\033[0m%s : < local teid %s, remote teid %s>"%(
+                        print(("\033[32m[+]\033[0m%s : < local teid %s, remote teid %s>"%(
                             GTPmessageTypeStr[k], format(i['local_teid'], '#08X'), 
-                            i['remote_teid'])    
+                            i['remote_teid'])))    
                         if fd :
                             fd.write("%s implements a GTP v2 stack"%key)   
                             fd.write("for %d msg type created teid %s"%(k, i['remote_teid']))                        
-    except Exception, e:
-        print "\033[31m[-]Error:\033[0m %s"%str(e)
+    except Exception as e:
+        print(("\033[31m[-]Error:\033[0m %s"%str(e)))
         if lstn : 
             lstn.stop()        
         return 2

@@ -77,13 +77,13 @@ class Listener(threading.Thread):
                         logWarn("Unsupported GTP version %02x"%(version), 
                                 verbose = self.is_verbose, TAG = self.TAG_NAME)
                         continue
-                    if not message_queue.has_key(addr[0]):
+                    if addr[0] not in message_queue:
                         logWarn("Unmanaged IP %s"%(addr[0]),
                                 verbose = self.is_verbose, TAG = self.TAG_NAME)                        
                         continue
                     req_msg_type = GTPResponse2Request[resp_msg_type]
 
-                    if not message_queue[addr[0]].has_key(req_msg_type):
+                    if req_msg_type not in message_queue[addr[0]]:
                         logWarn("Unsolicited response msg %d"%(resp_msg_type),
                                 verbose = self.is_verbose, TAG = self.TAG_NAME) 
                         continue
@@ -96,7 +96,7 @@ class Listener(threading.Thread):
                         message_queue[addr[0]][req_msg_type][0]['reply'] = 1
                     else:
                         for elem in message_queue[addr[0]][req_msg_type]:
-                            if elem.has_key('local_teid') and \
+                            if 'local_teid' in elem and \
                                 elem['local_teid'] ==  sequence_or_teid :     
                                 elem['reply'] = 1
                                 elem['remote_teid'] = self.__getFTEID(data[12:])
@@ -104,13 +104,13 @@ class Listener(threading.Thread):
                 count += 1
                 logNormal("RECEIVED #%d messages"%(count), verbose = self.is_verbose,
                           TAG = self.TAG_NAME)            
-            except timeout, e:
+            except timeout as e:
                 if addr[0] :
                     logErr("%s TIMEOUT_ERROR"%(addr[0]), TAG = self.TAG_NAME)
                 else:
                     logErr("TIMEOUT_ERROR", TAG = self.TAG_NAME)                         
                 pass
-            except error, e:
+            except error as e:
                 if e.errno == errno.EBADFD:
                     if addr[0] :                    
                         logErr("%s BAD_FILE_DESCRIPTOR_ERROR"%(addr[0]), 
@@ -128,7 +128,7 @@ class Listener(threading.Thread):
                 else:
                     logErr("UNKNOWN ERROR: %s"%(e), TAG = self.TAG_NAME) 
                     break
-            except Exception, e:
+            except Exception as e:
                 logErr("GENERIC ERROR: %s"%(e), TAG = self.TAG_NAME)
                 break 
     

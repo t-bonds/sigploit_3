@@ -14,7 +14,7 @@ import gtp.fraud
 import sigploit
 
 
-from .gtp.gtp_v2_core.utilities.configuration_parser import parseConfigs
+from gtp.gtp_v2_core.utilities.configuration_parser import parseConfigs
 
 config_file= ''
 remote_net =''
@@ -42,7 +42,7 @@ def gtpinfo():
     elif choice == "1":
         gtp.info.teidiscover()
     elif choice == "back":
-  		gtpattacksv2()
+  	    gtpattacksv2()
     else:
         print('\n\033[31m[-]Error:\033[0m Please Enter a Valid Choice (0-1)')
         time.sleep(1.5)

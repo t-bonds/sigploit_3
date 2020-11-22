@@ -19,10 +19,10 @@ def FUNC( back = 0):
 ##
 def printGreen(text, newLine=True):
     if newLine:
-        print '\033[0;32m%s\033[0m'%text
+        print('\033[0;32m%s\033[0m'%text)
     else:
-        print '\033[0;32m%s\033[0m'%text,
-        
+        print('\033[0;32m%s\033[0m'%text, end==' ')
+
 ##
 ## @brief      This method prints the passed text in RED
 ##
@@ -32,9 +32,9 @@ def printGreen(text, newLine=True):
 ##
 def printRed(text, newLine=True):
     if newLine:
-        print '\033[0;31m%s\033[0m'%text
+        print('\033[0;31m%s\033[0m'%text)
     else:
-        print '\033[0;31m%s\033[0m'%text,
+        print('\033[0;31m%s\033[0m'%text, end==' ')
 
 ##
 ## @brief      This method prints the passed text in YELLOW
@@ -45,9 +45,9 @@ def printRed(text, newLine=True):
 ##
 def printYellow(text, newLine=True):
     if newLine:
-        print '\033[1;33m%s\033[0m'%text
+        print('\033[1;33m%s\033[0m'%text)
     else:
-        print '\033[1;33m%s\033[0m'%text,
+        print('\033[1;33m%s\033[0m'%text, end==' ')
 
 ##
 ## @brief      Gets the current timestamp in log format (Y-m-d H:M:S)
@@ -72,11 +72,11 @@ def logNormal(text, verbose = False, TAG=None, newLine=True):
         s_text = "%s\t%s :: %s" % (getCurrTimestamp(), TAG, text)
     else:
         s_text = text
-    
+
     if newLine:
-        print s_text
+        print(s_text)
     else:
-        print s_text,
+        print(s_text, end==' ')
 
 ##
 ## @brief      Logs an ok message
@@ -93,7 +93,7 @@ def logOk(text, verbose = False, TAG=None, newLine=True):
         s_text = "%s\t%s :: %s" % (getCurrTimestamp(), TAG, text)
     else:
         s_text = text
-    
+
     printGreen(s_text, newLine)
 
 ##
@@ -106,12 +106,12 @@ def logOk(text, verbose = False, TAG=None, newLine=True):
 ##
 def logWarn(text, verbose = False, TAG=None, newLine=True):
     if not verbose :
-        return    
+        return
     if TAG is not None:
         s_text = "%s\t%s :: %s" % (getCurrTimestamp(), TAG, text)
     else:
         s_text = text
-    
+
     printYellow(s_text, newLine)
 
 ##
@@ -127,7 +127,7 @@ def logErr(text, TAG=None, newLine=True):
         s_text = "%s\t%s :: %s" % (getCurrTimestamp(), TAG, text)
     else:
         s_text = text
-    
+
     printRed(s_text, newLine)
 
 
@@ -142,5 +142,5 @@ def logErr(text, TAG=None, newLine=True):
 def slugfy(text):
     s = text.lower()
     s = re.sub(r"(_|\s+)", "-", s)
-    
+
     return s

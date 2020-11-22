@@ -7,9 +7,9 @@ import threading, time, signal
 from socket import *
 
 
-from gtpv2_sender_listener import SenderListener
+from .gtpv2_sender_listener import SenderListener
 
-from path_managment_listener import PathMgmtListener
+from .path_managment_listener import PathMgmtListener
 
 GTP_C_PORT = 2123
 
@@ -60,7 +60,7 @@ class ServerListener(threading.Thread):
         self.is_running = True
         
         if self.is_verbose: 
-            print "Working in server mode"
+            print("Working in server mode")
            
         ''' START PATH MGMT  LISTENER '''
         self.lsntPathMgmt = PathMgmtListener(self.sock, self.is_verbose)
@@ -93,4 +93,4 @@ class ServerListener(threading.Thread):
         self.is_running = False
         
         if self.is_verbose:
-            print "%s: Stopped"%(self.TAG_NAME)
+            print(("%s: Stopped"%(self.TAG_NAME)))

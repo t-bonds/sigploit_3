@@ -71,11 +71,11 @@ def main(config_file, target, listening=True, verbose = 2, output_file='results.
         sleep_time = DEFAULT_SLEEPTIME
       
         if listening_mode and  remote_net == None:
-            print "\033[33m[!]\033[0m remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required"
+            print("\033[33m[!]\033[0m remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required")
             return
         # MAIN BODY #
         if sys.argv[0] == "" :
-            print "\033[31m[-]Error:\033[0m missed config file"
+            print("\033[31m[-]Error:\033[0m missed config file")
             return            
   
         config = parseConfigs(config_file)
@@ -95,7 +95,7 @@ def main(config_file, target, listening=True, verbose = 2, output_file='results.
             lstn.start()
             lstn.join()
             lstn.stop()
-        print "\033[34m[*]\033[0m Sent %d GTPV2 messages"%(len(message_queue))
+        print(("\033[34m[*]\033[0m Sent %d GTPV2 messages"%(len(message_queue))))
         if not listening_mode :
             return
         gtp_nodes = []
@@ -103,26 +103,26 @@ def main(config_file, target, listening=True, verbose = 2, output_file='results.
         if output_file != "" :
             fd = open(output_file, 'w')
 
-        for key, value in message_queue.items():
-            for k,v in value.items():               
+        for key, value in list(message_queue.items()):
+            for k,v in list(value.items()):               
                 for i in v :
                     if i['reply'] == 1:
                         gtp_nodes.append(key)
-                        print "\033[32m[+]\033[0m %s implements a GTP v2 stack"%key
+                        print(("\033[32m[+]\033[0m %s implements a GTP v2 stack"%key))
                         if fd :
                             fd.write("%s implements a GTP v2 stack"%key) 
                         break
 
         num_gtp_nodes = len(gtp_nodes)
         if num_gtp_nodes > 0 :
-            print "\033[32m[+]\033[0m Found in total %d targets implemeting a GTP v2 stack "%num_gtp_nodes
-            print "\033[32m[+]\033[0m List of discovered GTPv2 nodes"
+            print(("\033[32m[+]\033[0m Found in total %d targets implemeting a GTP v2 stack "%num_gtp_nodes))
+            print("\033[32m[+]\033[0m List of discovered GTPv2 nodes")
             for n in gtp_nodes :
-                print n,"\n"
+                print((n,"\n"))
         else :
-            print "\033[31m[-]\033[0m Not found targets implemeting a GTP v2 stack"        
-    except Exception, e:
-        print "\033[31m[-]Error:\033[0m %s"%str(e)
+            print("\033[31m[-]\033[0m Not found targets implemeting a GTP v2 stack")        
+    except Exception as e:
+        print(("\033[31m[-]Error:\033[0m %s"%str(e)))
 
         if lstn : 
             lstn.stop()        

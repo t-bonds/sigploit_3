@@ -7,7 +7,7 @@ import random
 import struct
 
 from IPy import IP
-import gtp_v2_commons 
+from . import gtp_v2_commons 
 
 '''
     8     7     6     5     4     3     2     1    Octets
@@ -146,8 +146,8 @@ class Imsi (InformationElementBase):
         hex_imsi += ("f" + self.__val[14])
         
         if gtp_v2_commons.DEBUG :
-            print "imsi :", self.__val
-            print "hex imsi:", hex_imsi
+            print(("imsi :", self.__val))
+            print(("hex imsi:", hex_imsi))
         return bytearray.fromhex(hex_imsi)
     
 class Msisdn(InformationElementBase):
@@ -222,7 +222,7 @@ class RatType(InformationElementBase):
     def __init__(self, rat_type = 'E-UTRAN'):
         InformationElementBase.__init__(self, 82)
         self._len = 1 # 2 bytes
-        if not gtp_v2_commons.RATTypeDigit.has_key(rat_type) :
+        if rat_type not in gtp_v2_commons.RATTypeDigit :
             raise Exception("invalid rat type: %d"%(rat_type))
         self.__val = gtp_v2_commons.RATTypeDigit[rat_type] #1 byte
         
@@ -256,8 +256,8 @@ class MEIdentity(InformationElementBase) :
             hex_imei+=c1
             i += 2
         if gtp_v2_commons.DEBUG:
-            print "imei:", self.__val 
-            print "hex imei:", hex_imei
+            print(("imei:", self.__val)) 
+            print(("hex imei:", hex_imei))
         return bytearray.fromhex(hex_imei)   
 
 class ServingNetwork(InformationElementBase):

@@ -33,8 +33,8 @@
 # -*- coding: utf-8 -*-
 import random
 import struct
-from gtp_v2_information_element_base import *
-from gtp_v2_commons import *
+from .gtp_v2_information_element_base import *
+from .gtp_v2_commons import *
 
 '''
 TEID NOT PRESENT
@@ -94,7 +94,7 @@ class GTPV2MessageBase(object):
     ## 
     def __init__(self, msg_type, t = 0x00, p = 0x00, sequence = 0x00, version=0x02):
         
-        if not GTPmessageTypeStr.has_key(msg_type) :
+        if msg_type not in GTPmessageTypeStr :
             raise Exception("invalid mesg_type: %s"%(msg_type))
         self.__t_flag = t
         self.__p_flag = p

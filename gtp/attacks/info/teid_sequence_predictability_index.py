@@ -97,7 +97,7 @@ def main(argv=None):
  
         # MAIN BODY #
         if opts.teids_file == "" :
-            print "Error: missed file containing at least six consecutive teids"
+            print("Error: missed file containing at least six consecutive teids")
             return            
         ##read file
         teids = []
@@ -106,29 +106,29 @@ def main(argv=None):
         teids = [int(t.strip(),16) for t in teids]
         
         if len(teids) < 6:
-            print ("Error: File shall contain least six consecutive teids.",
-                   "provided %d")%(len(teids))
+            print((("Error: File shall contain least six consecutive teids.",
+                   "provided %d")%(len(teids))))
             return           
         tpi = TeidPredictabilityIndex()
         index, msg = tpi.teidPredictabilityIndex(teids)
-        print ("%d, %s")%(index, msg)
+        print((("%d, %s")%(index, msg)))
         tcp = TeidFixedPart()
         teids_hex = [hex(t) for t in teids]
 
         common_prefixes = tcp.teidFixedPart(teids_hex)
         if common_prefixes != [] :
-            print "The algorithm seems to use a number of bits less than 32 for",\
-                   "TEID generation."
-            print common_prefixes
+            print(("The algorithm seems to use a number of bits less than 32 for",\
+                   "TEID generation."))
+            print(common_prefixes)
         else :
-                print ("The algorithm seems to use a all 32 bits for",
-                   "TEID generation.")          
+                print(("The algorithm seems to use a all 32 bits for",
+                   "TEID generation."))          
        
-    except Exception, e:
+    except Exception as e:
         indent = len(program_name) * " "
         sys.stderr.write(program_name + ": " + repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help")
-        print "Exception %s"%str(e)       
+        print(("Exception %s"%str(e)))       
         return 2
 if __name__ == "__main__":
     if DEBUG:

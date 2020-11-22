@@ -15,7 +15,7 @@ import gtpmain
 import time
 
 
-from attacks.fraud import tunnel_hijacking
+from .attacks.fraud import tunnel_hijacking
 
 
 
@@ -23,7 +23,7 @@ from attacks.fraud import tunnel_hijacking
 def thijack():
 	try:
 		while True:
-			choice = raw_input("\033[37m(\033[0m\033[2;31mthijack\033[0m\033[37m)>\033[0m ")
+			choice = input("\033[37m(\033[0m\033[2;31mthijack\033[0m\033[37m)>\033[0m ")
 			if choice == 'help' or choice == '?':
 				gtpmain.helpmenu()
 			elif choice == 'show options':
@@ -41,15 +41,15 @@ def thijack():
 			elif 'back' in choice:
 				gtpmain.gtpattacksv2()
 			elif 'exit' in choice:
-				print '\nYou are now exiting SigPloit...'
+				print('\nYou are now exiting SigPloit...')
 				time.sleep(1)
 				sys.exit(0)
 			else:
-				print '\033[31m[-]Error:\033[0m invalid command, choose one of the below commands\n'
+				print('\033[31m[-]Error:\033[0m invalid command, choose one of the below commands\n')
 				gtpmain.helpmenu()
 
 	except Exception as e:
-		print "\033[31m[-]Error:\033[0m Tunnel Hijacking Failed to Launch, %s" %str(e)
+		print("\033[31m[-]Error:\033[0m Tunnel Hijacking Failed to Launch, %s" %str(e))
 		time.sleep(2)
 		gtpmain.gtpattacksv2()
 	

@@ -41,59 +41,59 @@ class PathMgmtListener(threading.Thread):
     ##
     def run(self):          
         if self.is_verbose: 
-            print "\n\n--: PATH MANAGEMENT MANAGER :--"            
-            print "Keep working on the opened connection"
+            print("\n\n--: PATH MANAGEMENT MANAGER :--")            
+            print("Keep working on the opened connection")
             
         self.is_running = True
         while self.sock is not None and self.is_running:
             try:
                 data = self.sock.recvfrom(1024)            
                 if len(data) > 8 : 
-                    print len(data)                     
+                    print((len(data)))                     
                     (flags, msg_type, length, sequence) = struct.unpack("!BBHL", 
                                                                         data[:8])
                     version = flags & 0x40 
                     teid = flags & 0x01
                     if version != 2 :
-                        print "%s:Unsupported GTP version %02x"%(self.TAG_NAME, 
-                                                                 version)
+                        print(("%s:Unsupported GTP version %02x"%(self.TAG_NAME, 
+                                                                 version)))
                         return
                     if msg_type != GTPmessageTypeDigit['echo-request']:
                         return
                     if teid != 0x00:
-                        print "%s:Invalid TEID %02x"%(self.TAG_NAME, teid)
+                        print(("%s:Invalid TEID %02x"%(self.TAG_NAME, teid)))
                         return
                     sequence = sequence & 0xffffff00
                     
-                    print ("%s: Received valid GTP ECHO REQUEST message with sequence"
-                                   " %02x"%(self.TAG_NAME, sequence))
+                    print(("%s: Received valid GTP ECHO REQUEST message with sequence"
+                                   " %02x"%(self.TAG_NAME, sequence)))
                     if self.is_verbose:                        
-                        print "%s: Preparing GTP ECHO RESPONSE message"%(self.TAG_NAME)
+                        print(("%s: Preparing GTP ECHO RESPONSE message"%(self.TAG_NAME)))
 
                     echo_response = EchoResponse(sequence)
                     if self.is_verbose:   
-                        print "%s: Sending GTP ECHO RESPONSE message"%(self.TAG_NAME)
+                        print(("%s: Sending GTP ECHO RESPONSE message"%(self.TAG_NAME)))
                     sent_bytes = self.connection.send(echo_response.get_message())
                     if sent_bytes is not None and sent_bytes>0:
-                        print "%s: Sent GTP ECHO RESPONSE message"%(self.TAG_NAME)
-                        print"%s: bytes sent %d"%(sent_bytes)
+                        print(("%s: Sent GTP ECHO RESPONSE message"%(self.TAG_NAME)))
+                        print(("%s: bytes sent %d"%(sent_bytes)))
                     else:
-                        print "%s: GTP ECHO RESPONSE message not sent"%(self.TAG_NAME)            
-            except timeout, e:
-                print "%s: TIMEOUT_ERROR: %s" % (self.TAG_NAME, e)
+                        print(("%s: GTP ECHO RESPONSE message not sent"%(self.TAG_NAME)))            
+            except timeout as e:
+                print(("%s: TIMEOUT_ERROR: %s" % (self.TAG_NAME, e)))
                 break
-            except error, e:
+            except error as e:
                 if e.errno == errno.EBADFD:
-                    print "%s: BAD_FILE_DESCRIPTOR_ERROR: %s"%(self.TAG_NAME, e)
+                    print(("%s: BAD_FILE_DESCRIPTOR_ERROR: %s"%(self.TAG_NAME, e)))
                     break
                 elif e.errno == errno.EPIPE:
-                    print "%s: BROKEN_PIPE_ERROR: %s"%(self.TAG_NAME, e)
+                    print(("%s: BROKEN_PIPE_ERROR: %s"%(self.TAG_NAME, e)))
                     break
                 else:
-                    print "%s: UNKNOWN_ERROR: %s"%(self.TAG_NAME, e)
+                    print(("%s: UNKNOWN_ERROR: %s"%(self.TAG_NAME, e)))
                     break
-            except Exception, e:
-                print "%s:GENERIC ERROR : %s"%(self.TAG_NAME, e)
+            except Exception as e:
+                print(("%s:GENERIC ERROR : %s"%(self.TAG_NAME, e)))
                 break       
     
     ##
@@ -108,5 +108,5 @@ class PathMgmtListener(threading.Thread):
         self.is_running = False
         
         if self.is_verbose: 
-            print"Stopped %s"%(self.TAG_NAME)
+            print(("Stopped %s"%(self.TAG_NAME)))
                 

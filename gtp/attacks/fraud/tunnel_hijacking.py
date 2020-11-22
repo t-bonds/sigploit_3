@@ -75,11 +75,11 @@ def main(config_file, target, listening=True, verbose = 2, output_file='results.
 
       
         if listening_mode and  remote_net == None:
-            print "remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required"
+            print("remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required")
             return
         # MAIN BODY #
         if config_file == "" :
-            print "\033[31m[-]Error:\033[0m missed config file"
+            print("\033[31m[-]Error:\033[0m missed config file")
             return            
   
         config = parseConfigs(config_file)
@@ -95,24 +95,24 @@ def main(config_file, target, listening=True, verbose = 2, output_file='results.
             lstn.start()
             lstn.join()
             lstn.stop()
-        print "Sent %d GTPV2 messages"%len(message_queue)
+        print(("Sent %d GTPV2 messages"%len(message_queue)))
         if not listening_mode :
             return
         #Remote TEID represents the new TEID used by the PGW.
         printed = False
-        for key, value in message_queue.items():
-            for k,v in value.items():              
+        for key, value in list(message_queue.items()):
+            for k,v in list(value.items()):              
                 for i in v :
                     if i['reply'] == 1:
                         if not printed :
-                            print "\033[32m[+]\033[0m %s implements a GTP v2 stack"%key
+                            print(("\033[32m[+]\033[0m %s implements a GTP v2 stack"%key))
                             printed = True
-                        print "%s : < local teid %s, remote teid %s>"%(
+                        print(("%s : < local teid %s, remote teid %s>"%(
                             GTPmessageTypeStr[k], format(i['local_teid'], '#08X'), 
-                            i['remote_teid'])    
+                            i['remote_teid'])))    
     
-    except Exception, e:
-        print "\033[31m[-]Error:\033[0m %s"%str(e)
+    except Exception as e:
+        print(("\033[31m[-]Error:\033[0m %s"%str(e)))
         if lstn : 
             lstn.stop()        
         return 2

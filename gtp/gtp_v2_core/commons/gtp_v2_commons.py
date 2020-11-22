@@ -6,9 +6,9 @@ import IPy
 
 
 RESERVED_IE_TYPES = [0, 98, 101, 102, 122, 130, 161]
-RESERVED_IE_TYPES.extend(range(4,51))
-RESERVED_IE_TYPES.extend(range(52,71))
-RESERVED_IE_TYPES.extend(range(187,255))
+RESERVED_IE_TYPES.extend(list(range(4,51)))
+RESERVED_IE_TYPES.extend(list(range(52,71)))
+RESERVED_IE_TYPES.extend(list(range(187,255)))
 
 DEBUG = 0
 
@@ -187,7 +187,7 @@ class ProtocolID:
             self.__data = data.get_packed()
         else:
             self.__data = data
-        if not ProtoIDType.has_key(proto_id):
+        if proto_id not in ProtoIDType:
             raise Exception("invalid Proto ID %s"%(proto_id))
         self.__type = ProtoIDType[proto_id]
     

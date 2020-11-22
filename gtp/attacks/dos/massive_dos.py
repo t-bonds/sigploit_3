@@ -113,11 +113,11 @@ def main(argv=None):
         sleep_time = DEFAULT_SLEEPTIME
       
         if listening_mode and  remote_net == None:
-            print "remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required"
+            print("remote network (e.g. 10.0.0.0/24, 10.0.0.1/32) is required")
             return
         # MAIN BODY #
         if opts.config_file == "" :
-            print "Error: missed config file"
+            print("Error: missed config file")
             return            
   
         config = parseConfigs(opts.config_file)
@@ -133,13 +133,13 @@ def main(argv=None):
             lstn.start()
             lstn.join()
             lstn.stop()
-        print "Sent %d GTPV2 messages"%len(message_queue)
+        print(("Sent %d GTPV2 messages"%len(message_queue)))
        
-    except Exception, e:
+    except Exception as e:
         indent = len(program_name) * " "
         sys.stderr.write(program_name + ": " + repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help")
-        print "Exception %s"%str(e)
+        print(("Exception %s"%str(e)))
         if lstn : 
             lstn.stop()        
         return 2

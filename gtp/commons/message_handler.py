@@ -7,9 +7,9 @@ import threading, time, signal
 from socket import socket, SOL_SOCKET, AF_INET, SO_REUSEADDR, SOCK_DGRAM
 
 
-from sender import Sender
+from .sender import Sender
 
-from listener import Listener
+from .listener import Listener
 #from commons.globals import GTP_C_PORT
 
 class MessageHandler(threading.Thread):
@@ -62,7 +62,7 @@ class MessageHandler(threading.Thread):
                   
         if self.is_listening:     
             if self.is_verbose: 
-                print "\033[34m[*]\033[0m starting the listener ...."                
+                print("\033[34m[*]\033[0m starting the listener ....")                
             ''' START Listener '''
             self.listener= Listener(open_sock = self.sock, 
                                     isVerbose = self.is_verbose)            
@@ -70,7 +70,7 @@ class MessageHandler(threading.Thread):
             self.listener.start()
         
         if self.is_verbose : 
-            print "\033[34m[*]\033[0m starting the sender ...."
+            print("\033[34m[*]\033[0m starting the sender ....")
         ''' START Sender'''        
         self.sender= Sender(sock = self.sock, messages = self.messages, 
                             peers = self.peer, isVerbose = self.is_verbose, 
@@ -101,4 +101,4 @@ class MessageHandler(threading.Thread):
         self.is_running = False
         
         if self.is_verbose:
-            print "%s: Stopped"%(self.TAG_NAME)
+            print(("%s: Stopped"%(self.TAG_NAME)))
